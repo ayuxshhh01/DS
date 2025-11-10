@@ -573,8 +573,119 @@ Editor.menu()
 
 
 
+#BST
+
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
 
 
+class BST:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, root, key):
+        if root is None:
+            return Node(key)
+        if key < root.key:
+            root.left = self.insert(root.left, key)
+        elif key > root.key:
+            root.right = self.insert(root.right, key)
+        return root
+
+    def search(self, root, key):
+        if root is None or root.key == key:
+            return root
+        if key < root.key:
+            return self.search(root.left, key)
+        return self.search(root.right, key)
+
+    def delete(self, root, key):
+        if root is None:
+            return root
+        if key < root.key:
+            root.left = self.delete(root.left, key)
+        elif key > root.key:
+            root.right = self.delete(root.right, key)
+        else:
+            if root.left is None:
+                return root.right
+            elif root.right is None:
+                return root.left
+            temp = self.min_value_node(root.right)
+            root.key = temp.key
+            root.right = self.delete(root.right, temp.key)
+        return root
+
+    def min_value_node(self, node):
+        current = node
+        while current.left is not None:
+            current = current.left
+        return current
+
+    def in_order(self, root):
+        if root:
+            self.in_order(root.left)
+            print(root.key, end=' ')
+            self.in_order(root.right)
+
+    def pre_order(self, root):
+        if root:
+            print(root.key, end=' ')
+            self.pre_order(root.left)
+            self.pre_order(root.right)
+
+    def menu(self):
+        while True:
+            print("\n--- Binary Search Tree Menu ---")
+            print("1. Insert")
+            print("2. Search")
+            print("3. Delete")
+            print("4. In-order traversal")
+            print("5. Pre-order traversal")
+            print("6. Exit")
+
+            choice = input("Enter your choice: ")
+
+            if choice == '1':
+                key = int(input("Enter key to insert: "))
+                self.root = self.insert(self.root, key)
+                print(f"Inserted {key}.")
+
+            elif choice == '2':
+                key = int(input("Enter key to search: "))
+                result = self.search(self.root, key)
+                if result:
+                    print(f"Key {key} found in the BST.")
+                else:
+                    print(f"Key {key} not found.")
+
+            elif choice == '3':
+                key = int(input("Enter key to delete: "))
+                self.root = self.delete(self.root, key)
+                print(f"Deleted {key} if it existed.")
+
+            elif choice == '4':
+                print("In-order traversal:", end=' ')
+                self.in_order(self.root)
+                print()
+
+            elif choice == '5':
+                print("Pre-order traversal:", end=' ')
+                self.pre_order(self.root)
+                print()
+
+            elif choice == '6':
+                print("Exiting the program.")
+                break
+
+       
+
+
+b = BST()
+b.menu()
 
 
 
